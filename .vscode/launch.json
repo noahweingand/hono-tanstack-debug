@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations":[
+        {
+            "name": "Launch via NPM",
+            "request": "launch",
+            "preLaunchTask": "npm: build:dev",
+            "runtimeArgs": [
+                "run", "dev"
+            ],
+            "outFiles": ["${workspaceFolder}/dist/server/**/*.js"],
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "NODE_ENV": "development",
+                "port": "3200",
+                "NODE_TLS_REJECT_UNAUTHORIZED": "0"
+            },
+            "runtimeExecutable": "npm",
+            "sourceMaps": true,
+            "console": "integratedTerminal",
+            "restart": true,
+            "type": "node"
+        }
+    ]
+}
