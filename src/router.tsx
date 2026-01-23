@@ -1,17 +1,26 @@
 import { createRouter as createReactRouter } from "@tanstack/react-router";
 
-import { routeTree } from "./routeTree.gen";
+import { routeTree } from "./routeTree.gen"
 
-export function createRouter() {
-    return createReactRouter({
+export function createRouter(initialContext: RouterContext) {
+    const router = createReactRouter({
         routeTree,
-        context: {
-            assets: { js: [], css: [] },
-        },
+        context: initialContext,
         // defaultPreload: false,
         scrollRestoration: true,
         notFoundMode: "root",
+        dehydrate: () => initialContext,
+        hydrate: (dehydrated) => {
+            router.update({
+                context: {
+                    ...initialContext,
+                    requestId: dehydrated.requestId ?? initialContext.requestId,
+                },
+            })
+        }
     });
+
+    return router;
 }
 
 declare module "@tanstack/react-router" {

@@ -8,12 +8,7 @@ import {
 import type { RouterContext } from '../router'
 
 export const Route = createRootRouteWithContext<RouterContext>()({
-    // beforeLoad: ((i) => {
-    //     console.log("root route context beforeLoad - requestId", i.context.requestId);
-    //     // return i.context;
-    // }),
     loader: (({ context }) => {
-        console.log("root route context loader", context);
         return { context };
     }),
     head: (i) => {
@@ -60,6 +55,7 @@ function RootComponent() {
         <HeadContent />
         </head>
         <body>
+            Request ID: {`${context.requestId || 'empty'}`}
         <Outlet />
         <TanStackRouterDevtools position="bottom-right" />
         <Scripts />
