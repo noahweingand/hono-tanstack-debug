@@ -1,39 +1,24 @@
 import { createRouter as createReactRouter } from "@tanstack/react-router";
 
-import { routeTree } from "./routeTree.gen";
-import { useRef } from "react";
+import { routeTree } from "./routeTree.gen"
 
-export function createRouter() {
-    // TODO: fix lazy typing
-    const ref: { current: any } = { current: null };
-
+export function createRouter(initialContext: RouterContext) {
     const router = createReactRouter({
         routeTree,
-        context: {
-            assets: { js: [], css: [] },
-            requestId: ''
-        },
+        context: initialContext,
         // defaultPreload: false,
         scrollRestoration: true,
         notFoundMode: "root",
-        dehydrate: () => {
-            console.log("router dehydrated", ref.current);
-            return {
-                requestId: ref.current.options.context.requestId
-            }
-        },
+        dehydrate: () => initialContext,
         hydrate: (dehydrated) => {
-            console.log("dehydrated data on hydrate", dehydrated)
-            ref.current.update({
+            router.update({
                 context: {
-                    ...ref.current.options.context,
-                    requestId: dehydrated.requestId
-                }
+                    ...initialContext,
+                    requestId: dehydrated.requestId ?? initialContext.requestId,
+                },
             })
         }
     });
-
-    ref.current = router;
 
     return router;
 }

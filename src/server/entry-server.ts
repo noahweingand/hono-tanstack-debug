@@ -14,21 +14,10 @@ export function render({
 
     const handler = createRequestHandler({
         request,
-        createRouter: () => {
-            const router = createRouter();
-
-            router.update({
-                context: {
-                    ...router.options.context,
-                    assets,
-                    requestId
-                }
-            });
-
-            console.info({ context: { ...router.options.context }}, "ssr");
-
-            return router;
-        }
+        createRouter: () => createRouter({
+            assets,
+            requestId
+        })
     });
 
     return handler(defaultStreamHandler);
